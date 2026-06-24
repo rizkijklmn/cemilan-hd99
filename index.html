@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Roti Buaya — Jakarta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FBF1E2;
+            --paper: #FFFCF6;
+            --terracotta: #A8442E;
+            --terracotta-dark: #7E3220;
+            --green: #2F6F5E;
+            --gold: #C9971F;
+            --ink: #3B2A20;
+            --ink-soft: #7A6657;
+            --line: #E6D9C4;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 0 18px 140px;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(160deg, var(--terracotta) 0%, var(--terracotta-dark) 100%);
+            color: var(--paper);
+            padding: 28px 18px 34px;
+            border-radius: 0 0 28px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto -40px -60px auto;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(201, 151, 31, 0.35), transparent 70%);
+        }
+
+        .hero-inner {
+            max-width: 560px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin: 0 0 6px;
+        }
+
+        .hero h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0 0 8px;
+        }
+
+        .hero p {
+            margin: 0;
+            font-size: 14px;
+            color: #F3E2CF;
+            line-height: 1.5;
+            max-width: 420px;
+        }
+
+        .croc {
+            margin-top: 18px;
+        }
+
+        /* SECTIONS */
+        section.card {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+            margin-top: 18px;
+        }
+
+        .sec-head {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .sec-num {
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        .sec-title {
+            font-family: 'Fraunces', serif;
+            font-size: 19px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .sec-sub {
+            font-size: 12.5px;
+            color: var(--ink-soft);
+            margin: 2px 0 14px;
+        }
+
+        /* PRODUCTS */
+        .product {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .product:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .product-icon {
+            width: 46px;
+            height: 46px;
+            flex: none;
+            border-radius: 12px;
+            background: #F3E7D2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 14.5px;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: var(--ink-soft);
+            margin-top: 1px;
+        }
+
+        .product-price {
+            font-size: 13px;
+            color: var(--terracotta);
+            font-weight: 700;
+            margin-top: 3px;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: none;
+        }
+
+        .stepper button {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--terracotta);
+            background: transparent;
+            color: var(--terracotta);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: .15s;
+        }
+
+        .stepper button:active {
+            transform: scale(0.9);
+        }
+
+        .stepper button:disabled {
+            opacity: .35;
+            cursor: default;
+        }
+
+        .stepper span {
+            min-width: 16px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* FORM ELEMENTS */
+        label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 14px 0 6px;
+        }
+
+        label:first-child {
+            margin-top: 0;
+        }
+
+        input[type=text],
+        input[type=tel],
+        input[type=date],
+        input[type=time],
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1.5px solid var(--line);
+            border-radius: 11px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--ink);
+            background: var(--paper);
+            outline: none;
+            transition: .15s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--terracotta);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .hint {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin-top: 5px;
+        }
+
+        .choice-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .choice {
+            flex: 1;
+            border: 1.5px solid var(--line);
+            border-radius: 11px;
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--ink-soft);
+            transition: .15s;
+            background: var(--paper);
+        }
+
+        .choice.active {
+            border-color: var(--terracotta);
+            color: var(--terracotta);
+            background: #FBEFE7;
+        }
+
+        .field-group {
+            display: none;
+        }
+
+        .field-group.show {
+            display: block;
+        }
+
+        .pay-option {
+            border: 1.5px solid var(--line);
+            border-radius: 13px;
+            padding: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        .pay-option.active {
+            border-color: var(--green);
+            background: #EFF6F3;
+        }
+
+        .pay-title {
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pay-title input {
+            width: auto;
+            margin: 0;
+        }
+
+        .pay-detail {
+            font-size: 12.5px;
+            color: var(--ink-soft);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--line);
+            display: none;
+            line-height: 1.6;
+        }
+
+        .pay-option.active .pay-detail {
+            display: block;
+        }
+
+        .pay-detail b {
+            color: var(--ink);
+        }
+
+        /* SUMMARY */
+        .sum-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.5px;
+            padding: 5px 0;
+            color: var(--ink-soft);
+        }
+
+        .sum-row b {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .sum-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-top: 1.5px dashed var(--line);
+            margin-top: 8px;
+            padding-top: 10px;
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--terracotta);
+        }
+
+        .sum-total span:first-child {
+            font-size: 13px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .empty-note {
+            font-size: 13px;
+            color: var(--ink-soft);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* STICKY BAR */
+        .stickybar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--paper);
+            border-top: 1px solid var(--line);
+            padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            box-shadow: 0 -8px 24px rgba(59, 42, 32, 0.08);
+            z-index: 50;
+        }
+
+        .stickybar-total {
+            line-height: 1.2;
+        }
+
+        .stickybar-total small {
+            display: block;
+            font-size: 10.5px;
+            color: var(--ink-soft);
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .stickybar-total strong {
+            font-family: 'Fraunces', serif;
+            font-size: 19px;
+            color: var(--terracotta);
+        }
+
+        .btn-send {
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: .15s;
+        }
+
+        .btn-send:active {
+            transform: scale(0.97);
+        }
+
+        .btn-send:disabled {
+            background: #C8BBAA;
+            cursor: not-allowed;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin-top: 24px;
+            line-height: 1.6;
+        }
+
+        footer a {
+            color: var(--terracotta);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .toast {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--ink);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            opacity: 0;
+            transition: .25s;
+            z-index: 100;
+            pointer-events: none;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="hero">
+        <div class="hero-inner">
+            <p class="eyebrow">Pemesanan Online</p>
+            <h1>Roti Buaya Betawi<br>Jakarta</h1>
+            <p>Roti buaya asli Betawi untuk lamaran, seserahan, dan acara nikahan — melambangkan kesetiaan, dibuat segar
+                sesuai pesanan.</p>
+            <div class="croc">
+                <svg width="120" height="46" viewBox="0 0 120 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M4 30 C4 18 16 12 30 13 C36 9 46 8 52 12 C58 8 70 9 74 14 C90 13 112 18 116 28 C112 34 96 36 84 33 C78 37 66 38 60 34 C50 38 36 37 28 33 C16 36 6 34 4 30 Z"
+                        fill="#F3E2CF" />
+                    <path d="M100 18 L116 14 L110 24 L116 33 L100 28" fill="#F3E2CF" />
+                    <circle cx="106" cy="18" r="2.2" fill="#7E3220" />
+                    <circle cx="20" cy="22" r="1.6" fill="#C9971F" />
+                    <circle cx="32" cy="19" r="1.6" fill="#C9971F" />
+                    <circle cx="44" cy="18" r="1.6" fill="#C9971F" />
+                    <circle cx="56" cy="19" r="1.6" fill="#C9971F" />
+                    <circle cx="68" cy="20" r="1.6" fill="#C9971F" />
+                    <path d="M14 26 Q20 30 26 26" stroke="#7E3220" stroke-width="1.4" fill="none"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrap">
+
+        <!-- STEP 1 — PRODUK -->
+        <section class="card">
+            <div class="sec-head"><span class="sec-num">01</span>
+                <h2 class="sec-title">Pilih Roti Buaya</h2>
+            </div>
+            <p class="sec-sub">Harga di bawah adalah perkiraan dasar — toko dapat menyesuaikan sebelum konfirmasi akhir.
+            </p>
+            <div id="productList"></div>
+        </section>
+
+        <!-- STEP 2 — DATA PEMESAN -->
+        <section class="card">
+            <div class="sec-head"><span class="sec-num">02</span>
+                <h2 class="sec-title">Data Pemesan</h2>
+            </div>
+            <p class="sec-sub">Diisi agar toko bisa menghubungi dan mengonfirmasi pesanan.</p>
+
+            <label for="custName">Nama pemesan</label>
+            <input type="text" id="custName" placeholder="cth. Sari Wulandari">
+
+            <label for="custPhone">Nomor WhatsApp</label>
+            <input type="tel" id="custPhone" placeholder="cth. 0812 3456 7890">
+
+            <label for="eventDate">Untuk acara / diambil tanggal</label>
+            <input type="date" id="eventDate">
+
+            <label for="eventTime">Jam dibutuhkan</label>
+            <input type="time" id="eventTime" value="10:00">
+        </section>
+
+        <!-- STEP 3 — PENGIRIMAN -->
+        <section class="card">
+            <div class="sec-head"><span class="sec-num">03</span>
+                <h2 class="sec-title">Ambil atau Diantar</h2>
+            </div>
+            <div class="choice-row">
+                <div class="choice active" data-deliv="pickup">🏠 Ambil di Toko</div>
+                <div class="choice" data-deliv="deliver">🛵 Diantar</div>
+            </div>
+
+            <div class="field-group" id="pickupInfo" style="margin-top:12px;">
+                <p class="hint">📍 Jl Daerah Khusus Ibukota Jakarta </p>
+            </div>
+
+            <div class="field-group" id="deliverInfo">
+                <label for="custAddress">Alamat pengantaran</label>
+                <textarea id="custAddress" placeholder="Tulis alamat lengkap, termasuk patokan terdekat"></textarea>
+                <p class="hint">Ongkos kirim dihitung dan dikonfirmasi langsung oleh toko via WhatsApp.</p>
+            </div>
+        </section>
+
+        <!-- STEP 4 — PEMBAYARAN -->
+        <section class="card">
+            <div class="sec-head"><span class="sec-num">04</span>
+                <h2 class="sec-title">Pembayaran</h2>
+            </div>
+            <p class="sec-sub">Pilih cara bayar. Pembayaran transfer dikonfirmasi manual oleh toko setelah pesanan
+                dikirim.</p>
+
+            <div class="pay-option active" data-pay="transfer">
+                <div class="pay-title"><input type="radio" name="pay" checked> 🏦 Transfer Bank</div>
+                <div class="pay-detail">
+                    Transfer ke rekening berikut, lalu kirim bukti transfer melalui WhatsApp ke toko:<br>
+                    <b>BCA — 1234567890</b><br>
+                    a.n. Jakarta<br>
+                    <i>(Nomor rekening contoh — pemilik toko perlu menggantinya)</i>
+                </div>
+            </div>
+
+            <div class="pay-option" data-pay="cod">
+                <div class="pay-title"><input type="radio" name="pay"> 💵 Bayar di Tempat (COD)</div>
+                <div class="pay-detail">Bayar tunai saat mengambil roti di toko atau saat roti diantar ke lokasi Anda.
+                </div>
+            </div>
+
+            <label for="notes" style="margin-top:16px;">Catatan tambahan (opsional)</label>
+            <textarea id="notes" placeholder="cth. Untuk acara lamaran, tolong dikemas rapi dengan pita"></textarea>
+        </section>
+
+        <!-- STEP 5 — RINGKASAN -->
+        <section class="card">
+            <div class="sec-head"><span class="sec-num">05</span>
+                <h2 class="sec-title">Ringkasan Pesanan</h2>
+            </div>
+            <div id="summaryBox">
+                <p class="empty-note">Belum ada roti dipilih. Tambahkan dari daftar di atas ☝️</p>
+            </div>
+        </section>
+
+        <footer>
+            Sistem pemesanan tidak terhubung ke aplikasi pembayaran resmi.<br>
+            Pesanan terkirim sebagai pesan siap-kirim ke WhatsApp toko: <a href="https://wa.me/6281322097311"
+                target="_blank">0813-2209-7311</a>
+        </footer>
+    </div>
+
+    <div class="stickybar">
+        <div class="stickybar-total">
+            <small>Total</small>
+            <strong id="stickyTotal">Rp 0</strong>
+        </div>
+        <button class="btn-send" id="sendBtn">📲 Kirim Pesanan</button>
+    </div>
+
+    <script>
+        const CONFIG = {
+            storePhone: '6281322097311', // format internasional tanpa tanda +
+            storeName: 'Roti Buaya Betawi Jakarta',
+            bank: { name: 'BCA', number: '1234567890', holder: 'Roti Buaya' } // GANTI dengan rekening asli toko
+        };
+
+        const PRODUCTS = [
+            { id: 'mini', name: 'Roti Buaya Mini', size: '± 20 cm, 1 ekor', price: 35000, desc: 'Cocok untuk oleh-oleh / camilan' },
+            { id: 'sedang', name: 'Roti Buaya Sedang', size: '± 40 cm, 1 ekor', price: 85000, desc: 'Pilihan populer untuk hantaran kecil' },
+            { id: 'besar', name: 'Roti Buaya Besar', size: '± 70 cm, sepasang', price: 350000, desc: 'Untuk acara lamaran / seserahan' },
+            { id: 'jumbo', name: 'Roti Buaya Jumbo', size: '± 100+ cm, sepasang', price: 650000, desc: 'Ukuran utama untuk akad & resepsi nikah' },
+        ];
+        /* Harga di atas adalah estimasi. Pemilik toko dapat mengubah angka "price" sesuai harga sebenarnya. */
+
+        const cart = {}; // {productId: qty}
+        let deliveryMode = 'pickup';
+        let payMode = 'transfer';
+
+        function formatRp(n) {
+            return 'Rp ' + n.toLocaleString('id-ID');
+        }
+
+        function renderProducts() {
+            const list = document.getElementById('productList');
+            list.innerHTML = PRODUCTS.map(p => `
+    <div class="product">
+      <div class="product-icon">${crocIconSmall()}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.size} · ${p.desc}</div>
+        <div class="product-price">${formatRp(p.price)}</div>
+      </div>
+      <div class="stepper">
+        <button onclick="changeQty('${p.id}', -1)">−</button>
+        <span id="qty-${p.id}">${cart[p.id] || 0}</span>
+        <button onclick="changeQty('${p.id}', 1)">+</button>
+      </div>
+    </div>
+  `).join('');
+        }
+
+        function crocIconSmall() {
+            return `<svg width="26" height="14" viewBox="0 0 120 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 30 C4 18 16 12 30 13 C36 9 46 8 52 12 C58 8 70 9 74 14 C90 13 112 18 116 28 C112 34 96 36 84 33 C78 37 66 38 60 34 C50 38 36 37 28 33 C16 36 6 34 4 30 Z" fill="#A8442E"/>
+    <path d="M100 18 L116 14 L110 24 L116 33 L100 28" fill="#A8442E"/>
+  </svg>`;
+        }
+
+        function changeQty(id, delta) {
+            const newQty = Math.max(0, (cart[id] || 0) + delta);
+            if (newQty === 0) { delete cart[id]; } else { cart[id] = newQty; }
+            document.getElementById('qty-' + id).textContent = cart[id] || 0;
+            renderSummary();
+        }
+
+        function getCartItems() {
+            return Object.entries(cart).map(([id, qty]) => {
+                const p = PRODUCTS.find(x => x.id === id);
+                return { ...p, qty, subtotal: p.price * qty };
+            });
+        }
+
+        function getTotal() {
+            return getCartItems().reduce((sum, i) => sum + i.subtotal, 0);
+        }
+
+        function renderSummary() {
+            const items = getCartItems();
+            const box = document.getElementById('summaryBox');
+            const total = getTotal();
+
+            if (items.length === 0) {
+                box.innerHTML = '<p class="empty-note">Belum ada roti dipilih. Tambahkan dari daftar di atas ☝️</p>';
+            } else {
+                box.innerHTML = items.map(i => `
+      <div class="sum-row"><span>${i.name} × ${i.qty}</span><b>${formatRp(i.subtotal)}</b></div>
+    `).join('') + `
+      <div class="sum-total"><span>Total</span><span>${formatRp(total)}</span></div>
+    `;
+            }
+            document.getElementById('stickyTotal').textContent = formatRp(total);
+            document.getElementById('sendBtn').disabled = items.length === 0;
+        }
+
+        // Delivery toggle
+        document.querySelectorAll('.choice').forEach(el => {
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.choice').forEach(c => c.classList.remove('active'));
+                el.classList.add('active');
+                deliveryMode = el.dataset.deliv;
+                document.getElementById('pickupInfo').classList.toggle('show', deliveryMode === 'pickup');
+                document.getElementById('deliverInfo').classList.toggle('show', deliveryMode === 'deliver');
+            });
+        });
+        document.getElementById('pickupInfo').classList.add('show');
+
+        // Payment toggle
+        document.querySelectorAll('.pay-option').forEach(el => {
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.pay-option').forEach(c => {
+                    c.classList.remove('active');
+                    c.querySelector('input').checked = false;
+                });
+                el.classList.add('active');
+                el.querySelector('input').checked = true;
+                payMode = el.dataset.pay;
+            });
+        });
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2600);
+        }
+
+        function buildMessage() {
+            const items = getCartItems();
+            const total = getTotal();
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const date = document.getElementById('eventDate').value;
+            const time = document.getElementById('eventTime').value;
+            const address = document.getElementById('custAddress').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+            const orderCode = 'RB' + Date.now().toString().slice(-6);
+
+            let lines = [];
+            lines.push(`Halo *${CONFIG.storeName}*, saya ingin memesan:`);
+            lines.push('');
+            items.forEach(i => lines.push(`• ${i.name} (${i.size}) x${i.qty} — ${formatRp(i.subtotal)}`));
+            lines.push('');
+            lines.push(`*Total: ${formatRp(total)}*`);
+            lines.push('');
+            lines.push(`Nama: ${name || '-'}`);
+            lines.push(`No. WA: ${phone || '-'}`);
+            lines.push(`Dibutuhkan tanggal: ${date || '-'} jam ${time || '-'}`);
+            lines.push(`Metode: ${deliveryMode === 'pickup' ? 'Ambil di toko' : 'Diantar ke alamat'}`);
+            if (deliveryMode === 'deliver') lines.push(`Alamat: ${address || '-'}`);
+            lines.push(`Pembayaran: ${payMode === 'transfer' ? `Transfer ${CONFIG.bank.name} a.n. ${CONFIG.bank.holder}` : 'Bayar di tempat (COD)'}`);
+            if (notes) lines.push(`Catatan: ${notes}`);
+            lines.push('');
+            lines.push(`Kode pesanan: ${orderCode}`);
+
+            return lines.join('\n');
+        }
+
+        document.getElementById('sendBtn').addEventListener('click', () => {
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const date = document.getElementById('eventDate').value;
+
+            if (!name || !phone) {
+                showToast('Mohon isi nama dan nomor WhatsApp dulu ya 🙏');
+                document.getElementById('custName').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            if (!date) {
+                showToast('Mohon pilih tanggal dibutuhkan');
+                document.getElementById('eventDate').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            if (deliveryMode === 'deliver' && !document.getElementById('custAddress').value.trim()) {
+                showToast('Mohon isi alamat pengantaran');
+                document.getElementById('custAddress').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const msg = buildMessage();
+            const url = `https://wa.me/${CONFIG.storePhone}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        });
+
+        renderProducts();
+        renderSummary();
+    </script>
+
+</body>
+
+</html>
