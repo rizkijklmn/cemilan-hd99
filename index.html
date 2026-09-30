@@ -42,12 +42,15 @@
 
         /* HERO */
         .hero {
-            background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.85) 0%, rgba(255, 87, 34, 0.95) 100%), url('banana.png');
+            background-size: cover, 120px;
+            background-blend-mode: normal;
             color: var(--paper);
             padding: 28px 18px 34px;
             border-radius: 0 0 28px 28px;
             position: relative;
             overflow: hidden;
+            border-bottom: 4px solid var(--ink);
         }
 
         .hero::after {
@@ -497,12 +500,7 @@
             <h1>Cemilan HD99</h1>
             <p>Keripik pisang dan rengginang yang gurih, manis, dan renyah. Cocok untuk menemani waktu santai Anda!</p>
             <div class="croc">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-                    <line x1="9" y1="9" x2="9.01" y2="9"></line>
-                    <line x1="15" y1="9" x2="15.01" y2="9"></line>
-                </svg>
+                <img src="banana.png" alt="Banana Pop Art" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; box-shadow: 4px 4px 0px var(--ink); border: 2px solid var(--ink); background: white;">
             </div>
         </div>
     </div>
@@ -657,11 +655,7 @@
         }
 
         function snackIconSmall() {
-            return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="M2 17l10 5 10-5"></path>
-                <path d="M2 12l10 5 10-5"></path>
-            </svg>`;
+            return `<img src="banana.png" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; mix-blend-mode: multiply;">`;
         }
 
         function changeQty(id, delta) {
