@@ -79,6 +79,21 @@
             font-size: 13px; 
             border-radius: 8px;
         }
+        .btn-edit { 
+            background: #FFB300; 
+            color: #212121;
+            width: auto; 
+            padding: 8px 14px; 
+            font-size: 13px; 
+            border-radius: 8px;
+            margin-right: 6px;
+        }
+        .btn-cancel {
+            background: var(--line);
+            color: var(--ink);
+            margin-top: 10px;
+            font-weight: 600;
+        }
         .btn-logout {
             background: var(--ink-soft);
             width: auto;
@@ -150,7 +165,7 @@
             </div>
 
             <div class="card">
-                <h2>➕ Tambah Produk</h2>
+                <h2 id="formTitle">➕ Tambah Produk</h2>
                 
                 <label>Nama Produk</label>
                 <input type="text" id="pName" placeholder="cth: Keripik Pisang Asin">
@@ -164,7 +179,8 @@
                 <label>Deskripsi Singkat</label>
                 <textarea id="pDesc" placeholder="cth: Rasa gurih bikin nagih" rows="2"></textarea>
                 
-                <button onclick="addProduct()" id="btnAdd">Simpan Produk</button>
+                <button onclick="saveProduct()" id="btnSave">Simpan Produk</button>
+                <button onclick="cancelEdit()" id="btnCancel" class="btn-cancel hidden">Batal Edit</button>
             </div>
 
             <div class="card">
@@ -243,12 +259,14 @@
             auth.signOut();
         }
 
-        function addProduct() {
+        let editingId = null;
+
+        function saveProduct() {
             const name = document.getElementById('pName').value.trim();
             const size = document.getElementById('pSize').value.trim();
             const price = parseInt(document.getElementById('pPrice').value);
             const desc = document.getElementById('pDesc').value.trim();
-            const btn = document.getElementById('btnAdd');
+            const btn = document.getElementById('btnSave');
 
             if(!name || !size || !price || !desc) {
                 alert("Semua kolom harus diisi dengan benar!");
@@ -258,24 +276,65 @@
             btn.disabled = true;
             btn.innerText = "Menyimpan ke Firebase...";
 
-            db.collection("products").add({
-                name: name, 
-                size: size, 
-                price: price, 
-                desc: desc,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                showToast("✅ Produk berhasil ditambahkan!");
-                document.getElementById('pName').value = '';
-                document.getElementById('pSize').value = '';
-                document.getElementById('pPrice').value = '';
-                document.getElementById('pDesc').value = '';
-            }).catch(e => {
-                alert("Gagal menambahkan produk: " + e.message);
-            }).finally(() => {
-                btn.disabled = false;
-                btn.innerText = "Simpan Produk";
-            });
+            if (editingId) {
+                db.collection("products").doc(editingId).update({
+                    name: name, 
+                    size: size, 
+                    price: price, 
+                    desc: desc
+                }).then(() => {
+                    showToast("✅ Produk berhasil diperbarui!");
+                    cancelEdit();
+                }).catch(e => {
+                    alert("Gagal mengupdate produk: " + e.message);
+                    btn.disabled = false;
+                    btn.innerText = "Update Produk";
+                });
+            } else {
+                db.collection("products").add({
+                    name: name, 
+                    size: size, 
+                    price: price, 
+                    desc: desc,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    showToast("✅ Produk berhasil ditambahkan!");
+                    cancelEdit();
+                }).catch(e => {
+                    alert("Gagal menambahkan produk: " + e.message);
+                    btn.disabled = false;
+                    btn.innerText = "Simpan Produk";
+                });
+            }
+        }
+
+        function editProduct(id, name, size, price, desc) {
+            editingId = id;
+            document.getElementById('formTitle').innerText = "✏️ Edit Produk";
+            document.getElementById('pName').value = name;
+            document.getElementById('pSize').value = size;
+            document.getElementById('pPrice').value = price;
+            document.getElementById('pDesc').value = desc;
+            
+            document.getElementById('btnSave').innerText = "Update Produk";
+            document.getElementById('btnCancel').classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            editingId = null;
+            document.getElementById('formTitle').innerText = "➕ Tambah Produk";
+            document.getElementById('pName').value = '';
+            document.getElementById('pSize').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pDesc').value = '';
+            
+            const btn = document.getElementById('btnSave');
+            btn.disabled = false;
+            btn.innerText = "Simpan Produk";
+            
+            document.getElementById('btnCancel').classList.add('hidden');
         }
 
         function deleteProduct(id, name) {
@@ -298,13 +357,20 @@
                 
                 snap.forEach(doc => {
                     const data = doc.data();
+                    const safeName = data.name.replace(/'/g, "\\'");
+                    const safeSize = data.size.replace(/'/g, "\\'");
+                    const safeDesc = data.desc.replace(/'/g, "\\'");
+
                     list.innerHTML += `
                         <div class="product-item">
                             <div>
                                 <b style="font-size:15px;">${data.name}</b><br>
                                 <span style="font-size:13px; color:var(--ink-soft);">${data.size} • <b>Rp ${data.price.toLocaleString('id-ID')}</b></span>
                             </div>
-                            <button class="btn-danger" onclick="deleteProduct('${doc.id}', '${data.name}')">Hapus</button>
+                            <div style="white-space: nowrap;">
+                                <button class="btn-edit" onclick="editProduct('${doc.id}', '${safeName}', '${safeSize}', ${data.price}, '${safeDesc}')">Edit</button>
+                                <button class="btn-danger" onclick="deleteProduct('${doc.id}', '${safeName}')">Hapus</button>
+                            </div>
                         </div>
                     `;
                 });
