@@ -853,6 +853,10 @@
             window.open(url, '_blank');
         });
 
+        // Set minimum date to today to prevent backdating
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('eventDate').setAttribute('min', today);
+
         document.getElementById('productList').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:var(--terracotta);">Memuat Produk...</div>';
 
         // Load Realtime dari Firestore
