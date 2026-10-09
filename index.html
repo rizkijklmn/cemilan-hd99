@@ -614,21 +614,28 @@
         <button class="btn-send" id="sendBtn">📲 Kirim Pesanan</button>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB_r4HK030ejPQYaBBwG9NkwvMjPcIfIj0",
+            authDomain: "cemilan-hd99.firebaseapp.com",
+            projectId: "cemilan-hd99",
+            storageBucket: "cemilan-hd99.firebasestorage.app",
+            messagingSenderId: "552880341544",
+            appId: "1:552880341544:web:567d7edaf005cc514d2b1d"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         const CONFIG = {
             storePhone: '6281219597771', // format internasional tanpa tanda +
             storeName: 'Cemilan HD99',
             payment: { method: 'DANA', number: '081219597771', holder: 'Cemilan HD99' }
         };
 
-        const PRODUCTS = [
-            { id: 'kpa-15', name: 'Keripik Pisang Asin Gurih', size: 'Ukuran 15rb', price: 15000, desc: 'Rasa asin gurih yang bikin nagih' },
-            { id: 'kpa-25', name: 'Keripik Pisang Asin Gurih', size: 'Ukuran 25rb', price: 25000, desc: 'Porsi lebih besar, puas ngemilnya' },
-            { id: 'kpm-15', name: 'Keripik Pisang Manis', size: 'Ukuran 15rb', price: 15000, desc: 'Manis legit pas di lidah' },
-            { id: 'kpm-25', name: 'Keripik Pisang Manis', size: 'Ukuran 25rb', price: 25000, desc: 'Kemasan besar manisnya bikin bahagia' },
-            { id: 'rga-15', name: 'Rengginang Asin Gurih', size: 'Harga 15rb', price: 15000, desc: 'Renyah dan gurih asli' },
-        ];
-        /* Harga di atas adalah estimasi. Pemilik toko dapat mengubah angka "price" sesuai harga sebenarnya. */
+        let PRODUCTS = [];
 
         const cart = {}; // {productId: qty}
         let deliveryMode = 'pickup';
@@ -786,8 +793,22 @@
             window.open(url, '_blank');
         });
 
-        renderProducts();
-        renderSummary();
+        document.getElementById('productList').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:var(--terracotta);">Memuat Produk...</div>';
+
+        // Load Realtime dari Firestore
+        db.collection("products").orderBy("createdAt", "asc").onSnapshot((snapshot) => {
+            PRODUCTS = [];
+            snapshot.forEach((doc) => {
+                PRODUCTS.push({ id: doc.id, ...doc.data() });
+            });
+            
+            if (PRODUCTS.length === 0) {
+                document.getElementById('productList').innerHTML = '<p style="text-align:center; color:var(--ink-soft); padding: 20px;">Belum ada produk. Silakan tambah di halaman admin.</p>';
+            } else {
+                renderProducts();
+            }
+            renderSummary(); // update summary in case a cart item was removed
+        });
     </script>
 
 </body>

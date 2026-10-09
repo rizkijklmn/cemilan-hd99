@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Cemilan HD99</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FFFDE7;
+            --paper: #FFFFFF;
+            --terracotta: #F57F17;
+            --green: #00C853;
+            --ink: #212121;
+            --ink-soft: #757575;
+            --line: #EEEEEE;
+        }
+        body { 
+            margin: 0; 
+            background: var(--cream); 
+            color: var(--ink); 
+            font-family: 'Outfit', sans-serif; 
+            padding-bottom: 50px;
+        }
+        .wrap { max-width: 560px; margin: 40px auto 0; padding: 0 18px; }
+        .card { 
+            background: var(--paper); 
+            border: 1px solid var(--line); 
+            border-radius: 18px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        h1, h2 { margin-top: 0; margin-bottom: 16px; font-weight: 800;}
+        
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        input, textarea { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 11px; 
+            border: 1.5px solid var(--line); 
+            font-family: inherit; 
+            margin-bottom: 16px; 
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.2s;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--terracotta);
+        }
+        
+        button { 
+            width: 100%;
+            background: var(--terracotta); 
+            color: white; 
+            border: none; 
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        button:active { transform: scale(0.98); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .btn-danger { 
+            background: #E53935; 
+            width: auto; 
+            padding: 8px 14px; 
+            font-size: 13px; 
+            border-radius: 8px;
+        }
+        .btn-logout {
+            background: var(--ink-soft);
+            width: auto;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        .product-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 14px 0; 
+            border-bottom: 1px solid var(--line); 
+        }
+        .product-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .hidden { display: none !important; }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--ink);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast">Notifikasi</div>
+
+    <div class="wrap">
+        <!-- LOGIN SECTION -->
+        <div id="loginSection" class="card">
+            <h2>🔑 Login Admin</h2>
+            <p style="font-size:13px; color:var(--ink-soft); margin-top:-10px; margin-bottom: 20px;">
+                Silakan login untuk mengelola daftar produk.
+            </p>
+            <input type="email" id="email" placeholder="Email Firebase Anda">
+            <input type="password" id="password" placeholder="Password Anda">
+            <button onclick="login()" id="btnLogin">Login Masuk</button>
+            <p id="loginError" style="color:#E53935; font-size:13px; font-weight:600; display:none; margin-top:12px; text-align:center;"></p>
+        </div>
+
+        <!-- ADMIN SECTION -->
+        <div id="adminSection" class="hidden">
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="margin:0;">Dashboard</h2>
+                    <p style="margin:4px 0 0; font-size:13px; color:var(--ink-soft);" id="userEmail">admin@email.com</p>
+                </div>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+
+            <div class="card">
+                <h2>➕ Tambah Produk</h2>
+                
+                <label>Nama Produk</label>
+                <input type="text" id="pName" placeholder="cth: Keripik Pisang Asin">
+                
+                <label>Ukuran / Varian</label>
+                <input type="text" id="pSize" placeholder="cth: Ukuran 15rb">
+                
+                <label>Harga (Angka Saja)</label>
+                <input type="number" id="pPrice" placeholder="cth: 15000">
+                
+                <label>Deskripsi Singkat</label>
+                <textarea id="pDesc" placeholder="cth: Rasa gurih bikin nagih" rows="2"></textarea>
+                
+                <button onclick="addProduct()" id="btnAdd">Simpan Produk</button>
+            </div>
+
+            <div class="card">
+                <h2>📦 Daftar Produk Saat Ini</h2>
+                <div id="adminProductList">Memuat data dari Firebase...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB_r4HK030ejPQYaBBwG9NkwvMjPcIfIj0",
+            authDomain: "cemilan-hd99.firebaseapp.com",
+            projectId: "cemilan-hd99",
+            storageBucket: "cemilan-hd99.firebasestorage.app",
+            messagingSenderId: "552880341544",
+            appId: "1:552880341544:web:567d7edaf005cc514d2b1d"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Toast Notification
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // Cek Status Login
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+                document.getElementById('userEmail').innerText = user.email;
+                loadProducts();
+            } else {
+                document.getElementById('loginSection').classList.remove('hidden');
+                document.getElementById('adminSection').classList.add('hidden');
+            }
+        });
+
+        function login() {
+            const e = document.getElementById('email').value.trim();
+            const p = document.getElementById('password').value;
+            const err = document.getElementById('loginError');
+            const btn = document.getElementById('btnLogin');
+            
+            if(!e || !p) {
+                err.style.display = 'block';
+                err.innerText = "Email dan password wajib diisi!";
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Memproses...";
+            err.style.display = 'none';
+
+            auth.signInWithEmailAndPassword(e, p).catch(error => {
+                err.style.display = 'block';
+                err.innerText = error.message;
+            }).finally(() => {
+                btn.disabled = false;
+                btn.innerText = "Login Masuk";
+            });
+        }
+
+        function logout() {
+            auth.signOut();
+        }
+
+        function addProduct() {
+            const name = document.getElementById('pName').value.trim();
+            const size = document.getElementById('pSize').value.trim();
+            const price = parseInt(document.getElementById('pPrice').value);
+            const desc = document.getElementById('pDesc').value.trim();
+            const btn = document.getElementById('btnAdd');
+
+            if(!name || !size || !price || !desc) {
+                alert("Semua kolom harus diisi dengan benar!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Menyimpan ke Firebase...";
+
+            db.collection("products").add({
+                name: name, 
+                size: size, 
+                price: price, 
+                desc: desc,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                showToast("✅ Produk berhasil ditambahkan!");
+                document.getElementById('pName').value = '';
+                document.getElementById('pSize').value = '';
+                document.getElementById('pPrice').value = '';
+                document.getElementById('pDesc').value = '';
+            }).catch(e => {
+                alert("Gagal menambahkan produk: " + e.message);
+            }).finally(() => {
+                btn.disabled = false;
+                btn.innerText = "Simpan Produk";
+            });
+        }
+
+        function deleteProduct(id, name) {
+            if(confirm("Yakin ingin menghapus produk '" + name + "'?")) {
+                db.collection("products").doc(id).delete().then(() => {
+                    showToast("🗑️ Produk berhasil dihapus!");
+                });
+            }
+        }
+
+        function loadProducts() {
+            // Mengambil data secara realtime berdasarkan urutan penambahan (createdAt)
+            db.collection("products").orderBy("createdAt", "asc").onSnapshot(snap => {
+                const list = document.getElementById('adminProductList');
+                list.innerHTML = '';
+                
+                if(snap.empty) {
+                    list.innerHTML = '<p style="text-align:center; color:var(--ink-soft);">Belum ada produk tersimpan.</p>';
+                }
+                
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    list.innerHTML += `
+                        <div class="product-item">
+                            <div>
+                                <b style="font-size:15px;">${data.name}</b><br>
+                                <span style="font-size:13px; color:var(--ink-soft);">${data.size} • <b>Rp ${data.price.toLocaleString('id-ID')}</b></span>
+                            </div>
+                            <button class="btn-danger" onclick="deleteProduct('${doc.id}', '${data.name}')">Hapus</button>
+                        </div>
+                    `;
+                });
+            }, error => {
+                document.getElementById('adminProductList').innerHTML = `<p style="color:red">Gagal memuat produk. Error: ${error.message}</p>`;
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>
