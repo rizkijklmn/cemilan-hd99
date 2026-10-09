@@ -11,15 +11,17 @@
         rel="stylesheet">
     <style>
         :root {
-            --cream: #FFF5F0;
+            --cream: #FFFDE7;
             --paper: #FFFFFF;
-            --terracotta: #FF5722;
-            --terracotta-dark: #E64A19;
+            --terracotta: #F57F17;
+            --terracotta-dark: #F9A825;
             --green: #00C853;
-            --gold: #FFC107;
+            --gold: #FBC02D;
             --ink: #212121;
             --ink-soft: #757575;
             --line: #EEEEEE;
+            --dana-blue: #108EE9;
+            --dana-blue-light: #EBF5FF;
         }
 
         * {
@@ -42,7 +44,7 @@
 
         /* HERO */
         .hero {
-            background: linear-gradient(135deg, rgba(255, 152, 0, 0.85) 0%, rgba(255, 87, 34, 0.95) 100%), url('banana.png');
+            background: linear-gradient(135deg, rgba(255, 213, 79, 0.9) 0%, rgba(255, 152, 0, 0.95) 100%), url('banana.png');
             background-size: cover, 120px;
             background-blend-mode: normal;
             color: var(--paper);
@@ -313,8 +315,8 @@
         }
 
         .pay-option.active {
-            border-color: var(--green);
-            background: #EFF6F3;
+            border-color: var(--dana-blue);
+            background: var(--dana-blue-light);
         }
 
         .pay-title {
@@ -566,13 +568,14 @@
             <p class="sec-sub">Pilih cara bayar. Pembayaran transfer dikonfirmasi manual oleh toko setelah pesanan
                 dikirim.</p>
 
-            <div class="pay-option active" data-pay="transfer">
-                <div class="pay-title"><input type="radio" name="pay" checked> 🏦 Transfer Bank</div>
+            <div class="pay-option active" data-pay="dana">
+                <div class="pay-title"><input type="radio" name="pay" checked> 
+                    <span style="background:var(--dana-blue); color:white; padding:2px 6px; border-radius:4px; font-weight:800; font-size:12px; font-style:italic; margin-right:4px;">DANA</span> DANA
+                </div>
                 <div class="pay-detail">
-                    Transfer ke rekening berikut, lalu kirim bukti transfer melalui WhatsApp ke toko:<br>
-                    <b>BCA — 1234567890</b><br>
-                    a.n. Jakarta<br>
-                    <i>(Nomor rekening contoh — pemilik toko perlu menggantinya)</i>
+                    Transfer ke nomor DANA berikut, lalu kirim bukti transfer melalui WhatsApp ke toko:<br>
+                    <b style="color:var(--dana-blue); font-size: 16px;">081219597771</b><br>
+                    a.n. Cemilan HD99<br>
                 </div>
             </div>
 
@@ -615,7 +618,7 @@
         const CONFIG = {
             storePhone: '6281219597771', // format internasional tanpa tanda +
             storeName: 'Cemilan HD99',
-            bank: { name: 'BCA', number: '1234567890', holder: 'Cemilan HD99' } // GANTI dengan rekening asli toko
+            payment: { method: 'DANA', number: '081219597771', holder: 'Cemilan HD99' }
         };
 
         const PRODUCTS = [
@@ -629,7 +632,7 @@
 
         const cart = {}; // {productId: qty}
         let deliveryMode = 'pickup';
-        let payMode = 'transfer';
+        let payMode = 'dana';
 
         function formatRp(n) {
             return 'Rp ' + n.toLocaleString('id-ID');
@@ -749,7 +752,7 @@
             lines.push(`Dibutuhkan tanggal: ${date || '-'} jam ${time || '-'}`);
             lines.push(`Metode: ${deliveryMode === 'pickup' ? 'Ambil di toko' : 'Diantar ke alamat'}`);
             if (deliveryMode === 'deliver') lines.push(`Alamat: ${address || '-'}`);
-            lines.push(`Pembayaran: ${payMode === 'transfer' ? `Transfer ${CONFIG.bank.name} a.n. ${CONFIG.bank.holder}` : 'Bayar di tempat (COD)'}`);
+            lines.push(`Pembayaran: ${payMode === 'dana' ? `DANA a.n. ${CONFIG.payment.holder}` : 'Bayar di tempat (COD)'}`);
             if (notes) lines.push(`Catatan: ${notes}`);
             lines.push('');
             lines.push(`Kode pesanan: ${orderCode}`);
